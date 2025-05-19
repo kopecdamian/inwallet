@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Bonds – InWallet</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2em; background: #f8f9fa; }
+        table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+        th { background-color: #007bff; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        h1 { color: #333; }
+    </style>
+</head>
+<body>
+
+    <h1>Government Bonds</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Purchase Date</th>
+                <th>Maturity Date</th>
+                <th>Face Value</th>
+                <th>Quantity</th>
+                <th>Interest Rate (%)</th>
+                <th>Interest Type</th>
+                <th>Redeemed?</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bond in bonds %}
+            <tr>
+                <td>{{ bond.name }}</td>
+                <td>{{ bond.bond_type }}</td>
+                <td>{{ bond.purchase_date }}</td>
+                <td>{{ bond.maturity_date }}</td>
+                <td>{{ bond.face_value }}</td>
+                <td>{{ bond.quantity }}</td>
+                <td>{{ bond.interest_rate }}</td>
+                <td>{{ bond.interest_type }}</td>
+                <td>{{ bond.is_redeemed|yesno:"Yes,No" }}</td>
+                <td>{{ bond.notes }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="10">No bonds found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>
