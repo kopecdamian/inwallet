@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Formularz</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2rem; }
+        form { max-width: 500px; }
+        .form-field { margin-bottom: 1rem; }
+        .form-field label { display: block; font-weight: bold; margin-bottom: 0.3rem; }
+        .form-field input, .form-field select, .form-field textarea {
+            width: 100%;
+            padding: 0.5rem;
+            box-sizing: border-box;
+        }
+        .submit-btn { padding: 0.5rem 1rem; }
+    </style>
+</head>
+<body>
+    <h1>Formularz</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-field">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                    <div style="color:red;">
+                        {{ field.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="submit-btn">Zapisz</button>
+    </form>
+</body>
+</html>
