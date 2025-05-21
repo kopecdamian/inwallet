@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Strona{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'wallet/styles.css' %}">
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="sidebar">
+        <a href="/" class="app-name">inWallet</a>
+        <ul>
+          <li><a href="/" class="link">Obligacje Skarbowe</a></li>
+        </ul>
+      </div>
+      <div class="page">
+        <div class="topbar">
+          <span class="username" id="userMenuToggle">{{ user.username }}</span>
+          <ul class="dropdown-menu" id="dropdownMenu">
+            <li>
+              <form id="logoutForm" action="/">
+                {% csrf_token %}
+                <button type="submit" class="logout-button">Moje konto</button>
+              </form>
+            </li>
+            <li>
+              <form action="/" method="post">
+                {% csrf_token %}
+                <button type="submit" class="logout-button">Zmień hasło</button>
+              </form>
+            </li>
+            <li>
+              <form id="logoutForm" action="/" method="post">
+                {% csrf_token %}
+                <button type="submit" class="logout-button">Wyloguj</button>
+              </form>
+            </li>
+          </ul>
+        </div>
+        <div class="header">
+          <h1>{% block titlePage %}Strona{% endblock %}</h1>
+          {% block button %}{% endblock %}
+        </div>
+        <div class="content">
+          {% block content %}{% endblock %}
+        </div>
+
+        </div.navabr>
+      </div>
+      
+      <script>
+        document.getElementById("userMenuToggle").addEventListener("click", function (event) {
+          event.stopPropagation();
+          var menu = document.getElementById("dropdownMenu");
+          if (menu.style.display === "block") {
+            menu.style.display = "none";
+          } else {
+            menu.style.display = "block";
+          }
+        });
+
+        document.addEventListener("click", function (event) {
+          var menu = document.getElementById("dropdownMenu");
+          var toggle = document.getElementById("userMenuToggle");
+          if (!toggle.contains(event.target) && !menu.contains(event.target)) {
+            menu.style.display = "none";
+          }
+        });
+      </script>
+      {% block script %}{% endblock %}
+  </body>
+
+</html>

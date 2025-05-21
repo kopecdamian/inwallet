@@ -36,3 +36,6 @@ Thumbs.db
 **/migrations/
 !**/migrations/__init__.py
 >>>>>>> d941201 (setup: Create base Django project structure [#1])
+
+# Scripts
+*.sh

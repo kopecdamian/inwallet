@@ -29,4 +29,4 @@ def governmentBondAdd(request):
     else:
         form = GovernmentBondForm()
 
-    return render(request, "GovernmentBondForm.html", {"form": form})
+    return render(request, "governmentBondForm.html", {"form": form})
