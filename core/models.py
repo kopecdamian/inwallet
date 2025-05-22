@@ -28,3 +28,16 @@ class GovernmentBond(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.name
+    
+class BondsTotal(models.Model):
+    BOND_TYPES = [
+        ('EDO', 'EDO – 10-year'),
+        ('COI', 'COI – 4-year'),
+        ('ROS', 'ROS – 3-year'),
+        ('ROR', 'ROR – 2-year'),
+    ]
+    bond_type = models.CharField(max_length=4, choices=BOND_TYPES)
+    total = models.DecimalField(max_digits=12, decimal_places=2)
+    updated_at = models.DateTimeField(auto_now_add=True) 
+    def __str__(self):
+        return f"{self.bond_type}: {self.total} zł"

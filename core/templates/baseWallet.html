@@ -14,7 +14,10 @@
       <div class="sidebar">
         <a href="/" class="app-name">inWallet</a>
         <ul>
-          <li><a href="/" class="link">Obligacje Skarbowe</a></li>
+          <li><a href="{% url 'wallet:dashboard' %}" class="link">Portfel</a></li>
+        </ul>
+        <ul>
+          <li><a href="{% url 'wallet:governmentBonds' %}" class="link">Obligacje Skarbowe</a></li>
         </ul>
       </div>
       <div class="page">

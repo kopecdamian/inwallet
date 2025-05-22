@@ -1,0 +1,33 @@
+{% extends 'baseWallet.html' %}
+
+{% block title %}Portfel{% endblock %}
+
+{% block titlePage %}Portfel{% endblock %}
+
+{% block content %}
+<table>
+    <thead>
+        <tr>
+            <th>Rodzaj</th>
+            <th>Wartość</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td colspan="11">
+                Obligacje skarbowe
+            </td>
+        </tr>
+        {% for bond in bond_totals %}
+            <tr>
+                <td>{{ bond.bond_type }}</td>
+                <td>{{ bond.total }}</td>
+            </tr>
+        {% empty %}
+        <tr>
+            <td colspan="10">Nie posiadasz zadnych obligacji skarbowych.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
