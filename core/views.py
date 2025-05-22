@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from .models import GovernmentBond
 from .forms import GovernmentBondForm
 from django.urls import reverse
@@ -30,3 +30,24 @@ def governmentBondAdd(request):
         form = GovernmentBondForm()
 
     return render(request, "governmentBondForm.html", {"form": form})
+
+# Detail of government bond
+def governmentBondDetails(request, bond_id):
+    bond = get_object_or_404(GovernmentBond, pk=bond_id)
+    if request.method == "POST":
+        form = GovernmentBondForm(request.POST, instance=bond)
+        if form.is_valid():
+            bond = form.save()
+            return HttpResponseRedirect(reverse("wallet:governmentBonds"))
+    else:
+        form = GovernmentBondForm(instance=bond)
+
+    return render(request, "governmentBondForm.html", {"form": form})
+
+# Delete of government bond
+def governmentBondDelete(request, bond_id):
+    bond = get_object_or_404(GovernmentBond, pk=bond_id)
+    if request.method == "POST":
+        bond.delete()
+        return HttpResponseRedirect(reverse("wallet:governmentBonds"))
+    return HttpResponseRedirect(reverse("wallet:governmentBonds"))

@@ -10,6 +10,7 @@
     <table>
         <thead>
             <tr>
+                <th>Operacje</th>
                 <th>Name</th>
                 <th>Type</th>
                 <th>Purchase Date</th>
@@ -25,6 +26,13 @@
         <tbody>
             {% for bond in all_bonds %}
             <tr>
+                <td>
+                    <a href="{% url 'wallet:governmentBondDetails' bond.id %}"><button>S</button></a>
+                    <form  action="{% url 'wallet:governmentBondDelete' bond.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="action-button">D</button>
+                      </form>
+                </td>
                 <td>{{ bond.name }}</td>
                 <td>{{ bond.bond_type }}</td>
                 <td>{{ bond.purchase_date }}</td>
@@ -38,9 +46,13 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="10">No bonds found.</td>
+                <td colspan="10">Nie posiadasz zadnych obligacji panstwowych</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+{% endblock %}
+
+{% block script %}
+
 {% endblock %}

@@ -9,4 +9,8 @@ urlpatterns = [
     path("bonds/", views.governmentBonds, name="governmentBonds"),
     # Add government bond
     path("bonds/add", views.governmentBondAdd, name="governmentBondAdd"),
+     # Detail of government bond
+    path("bonds/<int:bond_id>", views.governmentBondDetails, name="governmentBondDetails"),
+    # Delete of government bond
+    path("bonds/<int:bond_id>/delete", views.governmentBondDelete, name="governmentBondDelete"),
 ]
