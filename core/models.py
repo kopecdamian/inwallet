@@ -23,6 +23,8 @@ class GovernmentBond(models.Model):
     quantity = models.PositiveIntegerField()
     interest_rate = models.DecimalField(max_digits=5, decimal_places=2)
     interest_type = models.CharField(max_length=10, choices=INTEREST_TYPES)
+    return_rate = models.DecimalField(max_digits=10,  decimal_places=4)
+    profit = models.DecimalField(max_digits=10, decimal_places=2)
     is_redeemed = models.BooleanField(default=False)
     notes = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

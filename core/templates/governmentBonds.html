@@ -11,16 +11,16 @@
         <thead>
             <tr>
                 <th>Operacje</th>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Purchase Date</th>
-                <th>Maturity Date</th>
-                <th>Face Value</th>
-                <th>Quantity</th>
-                <th>Interest Rate (%)</th>
-                <th>Interest Type</th>
+                <th>Nazwa</th>
+                <th>Rodzaj</th>
+                <th>Data zakupu</th>
+                <th>Data wykupu</th>
+                <th>Wartość zakupu</th>
+                <th>Ilość</th>
+                <th>oprocentowanie (%)</th>
+                <th>Stopa Zwrotu (%)</th>
+                <th>Zysk</th>
                 <th>Redeemed?</th>
-                <th>Notes</th>
             </tr>
         </thead>
         <tbody>
@@ -40,9 +40,9 @@
                 <td>{{ bond.face_value }}</td>
                 <td>{{ bond.quantity }}</td>
                 <td>{{ bond.interest_rate }}</td>
-                <td>{{ bond.interest_type }}</td>
+                <td>{{ bond.return_rate }}</td>
+                <td>{{ bond.profit }}</td>
                 <td>{{ bond.is_redeemed|yesno:"Yes,No" }}</td>
-                <td>{{ bond.notes }}</td>
             </tr>
             {% empty %}
             <tr>

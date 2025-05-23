@@ -3,6 +3,8 @@ from .models import GovernmentBond, BondsTotal
 from .forms import GovernmentBondForm
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
+from datetime import datetime, date
+from dateutil.relativedelta import relativedelta
 
 def sum_bonds_by_type(bond_type):
     all_bonds_by_type = GovernmentBond.objects.filter(bond_type = bond_type)
@@ -36,7 +38,25 @@ def governmentBondAdd(request):
     if request.method == "POST":
         form = GovernmentBondForm(request.POST)
         if form.is_valid():
-            new_bond = form.save()
+            new_bond = form.save(commit=False)
+            purchase_date = new_bond.purchase_date
+            if new_bond.bond_type == 'EDO':
+                maturity_date = purchase_date + relativedelta(years=10)
+            elif new_bond.bond_type == 'COI':
+                maturity_date = purchase_date + relativedelta(years=4)
+            elif new_bond.bond_type == 'ROS':
+                maturity_date = purchase_date + relativedelta(years=3)
+            elif new_bond.bond_type == 'ROR':
+                maturity_date = purchase_date + relativedelta(years=2)
+            new_bond.maturity_date = maturity_date
+            
+            today = date.today()
+            days_number = (today - purchase_date).days
+            profit = new_bond.face_value * (100 + new_bond.interest_rate)/100/365*days_number
+            new_bond.profit = profit
+
+            new_bond.return_rate = profit / new_bond.face_value * 100
+            new_bond.save()
             sum_bonds_by_type(new_bond.bond_type)
             return HttpResponseRedirect(reverse("wallet:governmentBonds"))
     else:
