@@ -5,19 +5,25 @@
 {% block titlePage %}Dodaj obligacje skarbowe{% endblock %}
 
 {% block content %}
+{% load crispy_forms_tags %}
     <form method="post">
         {% csrf_token %}
-        {% for field in form %}
-            <div class="form-field">
-                {{ field.label_tag }}
-                {{ field }}
-                {% if field.errors %}
-                    <div style="color:red;">
-                        {{ field.errors }}
-                    </div>
-                {% endif %}
-            </div>
-        {% endfor %}
-        <button type="submit" class="submit-btn">Zapisz</button>
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary">Zapisz</button>
     </form>
+{% endblock %}
+
+{% block script %}
+<script>
+    const face_value_input = document.getElementById("id_face_value");
+    const quantity_input = document.getElementById("id_quantity");
+
+    face_value_input.addEventListener("input", function (event) {
+        quantity_input.value = face_value_input.value / 100
+    })
+
+    quantity_input.addEventListener("input", function (event) {
+        face_value_input.value = quantity_input.value * 100
+    })
+</script>
 {% endblock %}

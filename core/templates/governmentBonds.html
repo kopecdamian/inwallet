@@ -4,34 +4,43 @@
 
 {% block titlePage %}Obligacje skarbowe{% endblock %}
 
-{% block button %}<a href="{% url 'wallet:governmentBondAdd' %}" class="btn">Dodaj obligacje skarbową</a>{% endblock %}
+{% block button %}<a href="{% url 'wallet:governmentBondAdd' %}" class="btn btn-outline-primary">Dodaj obligacje skarbową</a>{% endblock %}
 
 {% block content %}
-    <table>
-        <thead>
+<table class="table table-bordered rounded-table">
+    <thead>
+        <tr>
+            <th scope="col">Operacje</th>
+            <th scope="col">Nazwa</th>
+            <th scope="col">Rodzaj</th>
+            <th scope="col">Data zakupu</th>
+            <th scope="col">Data wykupu</th>
+            <th scope="col">Wartość zakupu</th>
+            <th scope="col">Ilość</th>
+            <th scope="col">oprocentowanie (%)</th>
+            <th scope="col">Stopa Zwrotu (%)</th>
+            <th scope="col">Zysk [PLN]</th>
+            <th scope="col">Wykupione?</th> 
+        </tr>
+    </thead>
+    <tbody>
+        {% for bond in all_bonds %}
             <tr>
-                <th>Operacje</th>
-                <th>Nazwa</th>
-                <th>Rodzaj</th>
-                <th>Data zakupu</th>
-                <th>Data wykupu</th>
-                <th>Wartość zakupu</th>
-                <th>Ilość</th>
-                <th>oprocentowanie (%)</th>
-                <th>Stopa Zwrotu (%)</th>
-                <th>Zysk</th>
-                <th>Redeemed?</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for bond in all_bonds %}
-            <tr>
-                <td>
-                    <a href="{% url 'wallet:governmentBondDetails' bond.id %}"><button>S</button></a>
+                <td class="d-flex">
+                    <a href="{% url 'wallet:governmentBondDetails' bond.id %}" class="btn btn-outline-primary p-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info" viewBox="0 0 16 16">
+                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                          </svg>
+                    </a>
                     <form  action="{% url 'wallet:governmentBondDelete' bond.id %}" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="action-button">D</button>
-                      </form>
+                        <button type="submit" class="btn btn-outline-primary p-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                              </svg>
+                        </button>
+                    </form>
                 </td>
                 <td>{{ bond.name }}</td>
                 <td>{{ bond.bond_type }}</td>
@@ -49,8 +58,8 @@
                 <td colspan="10">Nie posiadasz zadnych obligacji skarbowych.</td>
             </tr>
             {% endfor %}
-        </tbody>
-    </table>
+    </tbody>
+</table>
 {% endblock %}
 
 {% block script %}

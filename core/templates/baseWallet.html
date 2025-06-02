@@ -4,77 +4,52 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Strona{% endblock %}</title>
+    <title>{% block title %}inWallet{% endblock %}</title>
     {% load static %}
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
     <link rel="stylesheet" href="{% static 'wallet/styles.css' %}">
   </head>
 
   <body>
-    <div class="container">
-      <div class="sidebar">
-        <a href="/" class="app-name">inWallet</a>
-        <ul>
-          <li><a href="{% url 'wallet:dashboard' %}" class="link">Portfel</a></li>
-        </ul>
-        <ul>
-          <li><a href="{% url 'wallet:governmentBonds' %}" class="link">Obligacje Skarbowe</a></li>
-        </ul>
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="col-md-3 col-lg-2 d-md-block bg-primary sidebar border-end border-dark">
+          <a class="navbar-brand" href="#">inWallet</a>
+          <div class="position-sticky pt-3">
+            <a href="{% url 'wallet:dashboard' %}">Portfel</a>
+            <a href="{% url 'wallet:governmentBonds' %}">Obligacje Skarbowe</a>
+          </div>
+        </nav>
+    
+        <main class="col-md-9 ms-sm-auto col-lg-10 gx-0">
+          <nav class="navbar bg-body-tertiary bg-primary px-3">
+            <div class="container-fluid d-flex justify-content-end">
+              <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Uzytkownik
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Ustawienia</a></li>
+                  <li><a class="dropdown-item" href="#">Wyloguj</a></li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+          <nav class="navbar bg-body-tertiary p-3">
+            <div class="container-fluid">
+              <span class="navbar-brand mb-0 h1">{% block titlePage %}inWallet{% endblock %}</span>
+              {% block button %}{% endblock %}
+            </div>
+          </nav>
+          
+          <div class="container-fluid p-3">
+            {% block content %}{% endblock %}
+          </div>
+        </main>
       </div>
-      <div class="page">
-        <div class="topbar">
-          <span class="username" id="userMenuToggle">{{ user.username }}</span>
-          <ul class="dropdown-menu" id="dropdownMenu">
-            <li>
-              <form id="logoutForm" action="/">
-                {% csrf_token %}
-                <button type="submit" class="logout-button">Moje konto</button>
-              </form>
-            </li>
-            <li>
-              <form action="/" method="post">
-                {% csrf_token %}
-                <button type="submit" class="logout-button">Zmień hasło</button>
-              </form>
-            </li>
-            <li>
-              <form id="logoutForm" action="/" method="post">
-                {% csrf_token %}
-                <button type="submit" class="logout-button">Wyloguj</button>
-              </form>
-            </li>
-          </ul>
-        </div>
-        <div class="header">
-          <h1>{% block titlePage %}Strona{% endblock %}</h1>
-          {% block button %}{% endblock %}
-        </div>
-        <div class="content">
-          {% block content %}{% endblock %}
-        </div>
-
-        </div.navabr>
-      </div>
-      
-      <script>
-        document.getElementById("userMenuToggle").addEventListener("click", function (event) {
-          event.stopPropagation();
-          var menu = document.getElementById("dropdownMenu");
-          if (menu.style.display === "block") {
-            menu.style.display = "none";
-          } else {
-            menu.style.display = "block";
-          }
-        });
-
-        document.addEventListener("click", function (event) {
-          var menu = document.getElementById("dropdownMenu");
-          var toggle = document.getElementById("userMenuToggle");
-          if (!toggle.contains(event.target) && !menu.contains(event.target)) {
-            menu.style.display = "none";
-          }
-        });
-      </script>
-      {% block script %}{% endblock %}
+    </div>
+    {% block script %}{% endblock %}
   </body>
-
 </html>
