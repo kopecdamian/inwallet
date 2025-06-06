@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}inWallet{% endblock %}</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'home/styles.css' %}">
+</head>
+
+<body>
+  <main>
+    <nav class="navbar">
+      <a href="" class="app-name">inWallet</a>
+      <ul class="nav-links">
+      {% block navbar %}{% endblock %}
+      </ul>
+  </nav>
+  {% block content %}
+  {% endblock %}
+  </main>
+</body>
+
+</html>
