@@ -5,19 +5,36 @@
   <meta charset="utf-8">
   <title>{% block title %}inWallet{% endblock %}</title>
   {% load static %}
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
   <link rel="stylesheet" href="{% static 'home/styles.css' %}">
 </head>
 
 <body>
   <main>
-    <nav class="navbar">
-      <a href="" class="app-name">inWallet</a>
-      <ul class="nav-links">
-      {% block navbar %}{% endblock %}
-      </ul>
-  </nav>
-  {% block content %}
-  {% endblock %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary px-3 justify-content-between" >
+      <a class="navbar-brand text-white" href="#">inWallet</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link text-white" href="#">Logowanie</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="#">Rejestracja</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="w-100 d-flex justify-content-center">
+      <div class="card m-5 w-75 p-3">
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>
   </main>
 </body>
 

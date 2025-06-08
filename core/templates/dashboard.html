@@ -10,6 +10,7 @@
         <tr>
             <th scope="col">Rodzaj</th>
             <th scope="col">Wartość</th>
+            <th scope="col">Część portfela</th>
         </tr>
     </thead>
     <tbody>
@@ -18,10 +19,11 @@
                 Obligacje skarbowe
             </td>
         </tr>
-        {% for bond in bond_totals %}
+        {% for bond in all_bonds %}
             <tr>
                 <td>{{ bond.bond_type }}</td>
                 <td>{{ bond.total }}</td>
+                <td>{{ bond.percent }}</td>
             </tr>
         {% empty %}
         <tr>

@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from .models import GovernmentBond, BondsTotal
-from .forms import GovernmentBondForm
+from .forms import GovernmentBondForm, InterestFormSet
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from datetime import datetime, date
@@ -38,10 +38,15 @@ def calculate_government_bond_profit(bond_data):
 
 # Dashboard
 def dashboard(request):
-    bond_totals = BondsTotal.objects.filter(total__gt = 0)
-
+    all_bonds = BondsTotal.objects.filter(total__gt = 0)
+    bonds_total = 0
+    for bond in all_bonds:
+        bonds_total += bond.total
+    
+    for bond in all_bonds:
+        bond.percent = round(100 / bonds_total * bond.total, 2)
     context = {
-        "bond_totals": bond_totals
+        "all_bonds": all_bonds
     }
     return render(request, "dashboard.html", context)
 
@@ -57,15 +62,43 @@ def governmentBonds(request):
 def governmentBondAdd(request):
     if request.method == "POST":
         form = GovernmentBondForm(request.POST)
-        if form.is_valid():
+        formset = InterestFormSet(request.POST)
+        if form.is_valid() and formset.is_valid():
             new_bond = form.save(commit=False)
-            calculate_government_bond_profit(new_bond)
+            formset.instance = new_bond
+            interest_rate = 0
+
+            for form in formset:
+                if form.cleaned_data and not form.cleaned_data.get('DELETE', False):
+                    interest_rate = form.cleaned_data.get('interest_rate')
+            
+            purchase_date = new_bond.purchase_date
+            if new_bond.bond_type == 'EDO':
+                maturity_date = purchase_date + relativedelta(years=10)
+            elif new_bond.bond_type == 'COI':
+                maturity_date = purchase_date + relativedelta(years=4)
+            elif new_bond.bond_type == 'ROS':
+                maturity_date = purchase_date + relativedelta(years=3)
+            elif new_bond.bond_type == 'ROR':
+                maturity_date = purchase_date + relativedelta(years=2)
+            new_bond.maturity_date = maturity_date
+                
+            today = date.today()
+            days_number = (today - purchase_date).days
+            profit = new_bond.face_value * interest_rate/100/365*days_number
+            new_bond.profit = profit
+
+            new_bond.return_rate = profit / new_bond.face_value * 100
+            new_bond.save() 
+
+            formset.save()
             sum_bonds_by_type(new_bond.bond_type)
             return HttpResponseRedirect(reverse("wallet:governmentBonds"))
     else:
         form = GovernmentBondForm()
+        formset = InterestFormSet()
 
-    return render(request, "governmentBondForm.html", {"form": form})
+    return render(request, "governmentBondForm.html", {"form": form, 'formset': formset})
 
 # Detail of government bond
 def governmentBondDetails(request, bond_id):
